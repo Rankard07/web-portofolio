@@ -141,7 +141,7 @@ export function NavigationMenuWrapper({
                 <NavigationMenuItem key={item.title}>
                   {item.children ? (
                     <>
-                      <NavigationMenuTrigger onClick={(e) => e.preventDefault}>
+                      <NavigationMenuTrigger onClick={(e) => e.preventDefault()}>
                         {item.title}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
