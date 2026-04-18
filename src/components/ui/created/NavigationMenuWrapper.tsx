@@ -84,7 +84,11 @@ const defaultItems: MenuItems[] = [
 
 export function NavigationMenuWrapper({
   className,
-  logo = { url: "/", title: "Portofolio", showIcon: true },
+  logo = {
+    url: "/",
+    title: "Portofolio",
+    showIcon: true,
+  },
   items = defaultItems,
 }: NavigationMenuWrapperProps) {
   return (
@@ -115,9 +119,12 @@ export function NavigationMenuWrapper({
 
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+        // "bg-background/60" membuat warna tema Anda jadi transparan 60%
+        // "backdrop-blur-md" memberikan efek blur pada konten di bawahnya
+        "sticky top-0 z-50 w-full border-b bg-background/60 backdrop-blur-md supports-backdrop-filter:bg-background/60",
         className,
-      )}>
+      )}
+    >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo Section */}
         <div className="flex items-center gap-2">
@@ -126,7 +133,8 @@ export function NavigationMenuWrapper({
             className={cn(
               "flex items-center gap-2 font-bold text-xl transition-colors hover:text-primary",
               logo.className,
-            )}>
+            )}
+          >
             {logo.showIcon && <Logo size={32} className="text-primary" />}
             <span>{logo.title}</span>
           </a>
@@ -137,20 +145,44 @@ export function NavigationMenuWrapper({
         <div className="hidden md:flex flex-1 justify-end">
           <NavigationMenu delayDuration={300}>
             <NavigationMenuList>
+              {/* LOOP: Iterates through defaultItems array:
+                  - Home (no children) → renders NavigationMenuLink
+                  - Projects (no children) → renders NavigationMenuLink  
+                  - Services (has children array) → renders NavigationMenuTrigger with dropdown
+                  - About (no children) → renders NavigationMenuLink
+                  - Contact (no children) → renders NavigationMenuLink */}
               {items.map((item) => (
                 <NavigationMenuItem key={item.title}>
+                  {/* TERNARY: Check if item has children property
+                      TRUE → Services (renders dropdown trigger + content)
+                      FALSE → Home, Projects, About, Contact (renders flat link) */}
                   {item.children ? (
                     <>
-                      <NavigationMenuTrigger onClick={(e) => e.preventDefault()}>
+                      {/* ← YA = Services saja (punya children: Web Dev, UI/UX) */}
+                      {/* SERVICES DROPDOWN TRIGGER: Displays "Services" text with chevron icon */}
+                      <NavigationMenuTrigger
+                        onClick={(e) => e.preventDefault()}
+                        /* className={navigationMenuTriggerStyle({
+                          variant: "default",
+                          size: "default",
+                        })} */
+                        // className="btn btn-outline btn-sm border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                      >
                         {item.title}
+                        {/*  ← Tampil: "Services" (dengan dropdown indicator ▼) */}
                       </NavigationMenuTrigger>
+                      {/* SERVICES DROPDOWN CONTENT: Shows when hovering/clicking Services */}
                       <NavigationMenuContent>
                         <ul className="grid w-100 gap-3 p-4 md:w-125 md:grid-cols-2 lg:w-150">
+                          {/* LOOP: Renders children of Services:
+                              - "Web Development" with description
+                              - "UI/UX Design" with description */}
                           {item.children.map((child) => (
                             <ListItem
                               key={child.title}
                               title={child.title}
-                              href={child.url}>
+                              href={child.url}
+                            >
                               {child.description}
                             </ListItem>
                           ))}
@@ -158,12 +190,18 @@ export function NavigationMenuWrapper({
                       </NavigationMenuContent>
                     </>
                   ) : (
-                    <a href={item.url}>
-                      <NavigationMenuLink
-                        className={navigationMenuTriggerStyle()}>
-                        {item.title}
-                      </NavigationMenuLink>
-                    </a>
+                    // ← TIDAK = Home, Projects, About, Contact (flat items)
+                    /* FLAT NAV LINKS: Renders for items WITHOUT children
+                       Displays: "Home", "Projects", "About", "Contact" */
+                    <NavigationMenuLink
+                      asChild
+                      /* className={navigationMenuTriggerStyle({
+                        variant: "outline",
+                      })} */
+                      // className="btn btn-outline btn-sm border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <a href={item.url}>{item.title}</a>
+                    </NavigationMenuLink>
                   )}
                 </NavigationMenuItem>
               ))}
@@ -192,7 +230,8 @@ export function NavigationMenuWrapper({
                   <div key={item.title} className="flex flex-col gap-2">
                     <a
                       href={item.url}
-                      className="text-lg font-medium transition-colors hover:text-primary">
+                      className="text-lg font-medium transition-colors hover:text-primary"
+                    >
                       {item.title}
                     </a>
                     {item.children && (
@@ -201,7 +240,8 @@ export function NavigationMenuWrapper({
                           <a
                             key={child.title}
                             href={child.url}
-                            className="text-sm text-muted-foreground hover:text-primary">
+                            className="text-sm text-muted-foreground hover:text-primary"
+                          >
                             {child.title}
                           </a>
                         ))}

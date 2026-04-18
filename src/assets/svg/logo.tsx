@@ -4325,7 +4325,8 @@ export const Logo = ({ size = "1em", ...props }: LogoProps) => (
       fill="#0A1512"
       transform="translate(453,318)"
     />
-  </svg>
+  </svg> 
+
 );
 
 export default Logo;

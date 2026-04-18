@@ -21,7 +21,8 @@ function NavigationMenu({
         "group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
         className,
       )}
-      {...props}>
+      {...props}
+    >
       {children}
       {viewport && <NavigationMenuViewport />}
     </NavigationMenuPrimitive.Root>
@@ -59,6 +60,26 @@ function NavigationMenuItem({
 
 const navigationMenuTriggerStyle = cva(
   "group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-2xl px-4.5 py-2.5 text-sm font-medium transition-all outline-none hover:bg-muted focus:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:bg-muted/50 data-popup-open:hover:bg-muted data-open:bg-muted/50 data-open:hover:bg-muted data-open:focus:bg-muted",
+  {
+    variants: {
+      variant: {
+        default: "hover:bg-muted focus:bg-muted",
+        outline:
+          "btn btn-outline btn-sm border-primary text-primary hover:bg-primary hover:text-primary-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        daisyPrimary: "btn btn-primary btn-sm",
+      },
+      size: {
+        default: "h-9",
+        sm: "h-8 text-xs",
+        lg: "h-10 text-base",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
 );
 
 function NavigationMenuTrigger({
@@ -70,7 +91,8 @@ function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(navigationMenuTriggerStyle(), "group", className)}
-      {...props}>
+      {...props}
+    >
       {children}{" "}
       <ChevronDownIcon
         className="relative top-px ml-1 size-3 transition duration-300 group-data-popup-open/navigation-menu-trigger:rotate-180 group-data-open/navigation-menu-trigger:rotate-180"
@@ -105,7 +127,8 @@ function NavigationMenuViewport({
       className={cn(
         // "absolute top-full left-0 isolate z-50 flex justify-center"
         "absolute top-full right-0 isolate z-50 flex justify-center",
-      )}>
+      )}
+    >
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(
@@ -145,7 +168,8 @@ function NavigationMenuIndicator({
         "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:animate-in data-[state=visible]:fade-in",
         className,
       )}
-      {...props}>
+      {...props}
+    >
       <div className="relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm bg-border shadow-md" />
     </NavigationMenuPrimitive.Indicator>
   );
